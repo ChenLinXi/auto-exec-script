@@ -21,7 +21,7 @@ writeQueue = Queue.Queue(0)
 #producer thread
 class Reader(threading.Thread):
 
-	def __init__(self, t_name, queue, addr='10.100.188.79:4161', topic="a", channel="c",lookupd_poll_interval=15,max_in_flight=1):
+	def __init__(self, t_name, queue, addr='xxxx', topic="a", channel="c",lookupd_poll_interval=15,max_in_flight=1):
 		threading.Thread.__init__(self,name=t_name)
 		self.addr = addr
 		self.topic = topic
@@ -48,7 +48,7 @@ class Reader(threading.Thread):
 
 class Writer(threading.Thread):
 
-	def __init__(self, t_name, queue, addr='10.100.188.79:4150' ,topic="Mysql_Monitor"):
+	def __init__(self, t_name, queue, addr='xxxx' ,topic="Mysql_Monitor"):
 		threading.Thread.__init__(self,name=t_name)
 		self.data = queue
 		self.addr = addr
