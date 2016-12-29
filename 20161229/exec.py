@@ -157,7 +157,6 @@ def foo():
 
 		if lookupd_address:
 			r = Reader('Reader.', readQueue, lookupd_address, request_topic)
-			nsq.run(r)
 		else:
 			r = Reader(t_name = 'Reader.', queue=readQueue)#, topic=request_topic)
 
