@@ -162,12 +162,12 @@ def foo():
 		response_topic = 'mysql_response'
 
 		if lookupd_address:
-			r = Reader('Reader.', readQueue, lookupd_address, request_topic)
+			r = Reader(t_name='Reader.', queue=readQueue, addr=lookupd_address, topic=request_topic)
 		else:
 			r = Reader(t_name = 'Reader.', queue=readQueue)#, topic=request_topic)
 
 		if nsqd_address[0]:
-			w = Writer('Writer.', writeQueue, nsqd_address[0], response_topic)
+			w = Writer(t_name='Writer.', queue=writeQueue, addr=nsqd_address[0], topic=response_topic)
 		else:
 			w = Writer(t_name='Writer.', queue=writeQueue)#, topic=response_topic)
 
