@@ -6,7 +6,6 @@
 import os,sys,json
 import nsq
 import commands
-import tornado.ioloop
 import time
 import threading
 import Queue
