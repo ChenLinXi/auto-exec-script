@@ -1,6 +1,7 @@
 #/usr/bin/env python
 #coding: utf-8
 #author: Jason Chen, 369575409@qq.com
+#Version: db:1.0.9
 
 import os,sys,json
 import nsq
