@@ -12,6 +12,7 @@ import Queue
 import subprocess
 import urllib2,urllib
 from multiprocessing import Process
+from multiprocessing import cpu_count
 
 global readQueue
 global writeQueue
@@ -192,7 +193,7 @@ def foo():
 
 	try:
 		r.start()
-		for i in range(5):
+		for i in range(cpu_count()):
 			e = Execute('Execute.', readQueue)
 			e.start()
 		w.start()
