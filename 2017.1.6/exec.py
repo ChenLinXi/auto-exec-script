@@ -127,7 +127,7 @@ class Execute(threading.Thread):
 		return RES
 
 	def _exec(self, RES):
-		path = 'cd '+ RES['path'] + ' && '+ RES['Command']
+		path = 'cd '+ RES['path'] + ' && '+ RES['command']
 		try:
 			global writeQueue
 			res = subprocess.Popen(path, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
