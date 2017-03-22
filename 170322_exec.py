@@ -40,10 +40,11 @@ class Result(object):
 
 class Writer(object):
 	def __init__(self, msg):
-		self.addr = os.getenv('nsqd').split(',')[0]
+		self.addr = os.getenv('nsqd').split(',')[0].split(':')[0]
+		self.port = str(int(os.getenv('nsqd').split(',')[0].split(':')[1])+1)
 		self.topic = os.getenv('pub_topic')
 		self.msg = msg
-		self.url = "http://"+self.addr+"/pub?topic="+self.topic
+		self.url = "http://"+self.addr+":"+self.port+"/pub?topic="+self.topic
 	def postMsg(self):
 		req = urllib2.Request(self.url, self.msg)
 		req.get_method = lambda: 'POST'
@@ -72,7 +73,7 @@ class Reader(threading.Thread):
 			msg = Result(host, port, 'Read message from nsq.', str(message.body))
 			write = Writer(msg.getResult())
 			result = write.postMsg()
-			print 'Read message from nsq result:' + result + '\n'
+			#print 'Read message from nsq result:' + result + '\n'
 			self.data.put(message) # put message from nsq to block queue
 		except Exception,e:	
 			pass
@@ -111,7 +112,7 @@ class Execute(threading.Thread):
 			message = Result(host, port, 'Download script.', str(msg))
 			write = Writer(message.getResult())
 			result = write.postMsg()
-			print 'download result:' + result + '\n'
+			#print 'download result:' + result + '\n'
 		except Exception, e:
 			print e
 
@@ -139,12 +140,14 @@ class Execute(threading.Thread):
 		try:
 			begin = self.strify(RES['id'], 'Begin excute')
 			write1 = Writer(begin)
-			print 'Begin excute result:' + write1.postMsg() + '\n'
-			(status,res) = commands.getstatusoutput(path)
-			after = self.strify(RES['id'], str(status) + "," + str(res))
-			write = Writer(after)
-			result = write.postMsg()
-			print 'Excute finished result:' + result + '\n'
+			#print 'Begin excute result:' + write1.postMsg() + '\n'
+			res = subprocess.Popen(path, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+			while True:
+				line = res.stdout.readline()
+				line = self.strify(RES['id'], line)
+				write = Writer(line)
+				result = write.postMsg()
+				#print 'Excute process begins:' + write.postMsg() + '\n'
 		except Exception,e:
 			print e
 			return e
@@ -166,7 +169,7 @@ class Execute(threading.Thread):
 			else:
 				res = self.strify(RES['id'],'dir not exist, try again!')
 				write = Writer(res)
-				print 'Dir not exist result:' + write.postMsg() + '\n'
+				#print 'Dir not exist result:' + write.postMsg() + '\n'
 
 #multi threads
 def foo():
@@ -208,3 +211,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
