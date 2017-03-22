@@ -52,7 +52,7 @@ class Writer(object):
 
 class Reader(threading.Thread):
 
-	def __init__(self, t_name, queue, addr='10.100.188.79:4161', topic="a", channel="c",lookupd_poll_interval=5,max_in_flight=1):
+	def __init__(self, t_name, queue, addr='xxxx', topic="a", channel="c",lookupd_poll_interval=5,max_in_flight=1):
 		threading.Thread.__init__(self,name=t_name)
 		self.addr = addr
 		self.topic = topic
